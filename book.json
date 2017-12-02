@@ -1,0 +1,90 @@
+{
+    "author": "Jeffery",
+    "description": "Think something,do something,for my heart.",
+    "extension": null,
+    "generator": "site",
+    "language": "zh-hans",
+    "isbn": "",
+    "links": {
+        "sharing": {
+            "all": null,
+            "facebook": null,
+            "google": null,
+            "twitter": null,
+            "weibo": null
+        }
+    },
+    "output": null,
+    "pdf": {
+        "fontSize": 12,
+        "footerTemplate": null,
+        "headerTemplate": null,
+        "margin": {
+            "bottom": 36,
+            "left": 62,
+            "right": 62,
+            "top": 36
+        },
+        "pageNumbers": false,
+        "paperSize": "a4"
+    },
+    "plugins": [
+        "-lunr",
+        "-search",
+        "-highlight",
+        "prism",
+        "prism-themes",
+        "search-plus",
+        "theme-comscore",
+        "toggle-chapters",
+        "codeblock-filename",
+        "splitter",
+        "tbfed-pagefooter",
+        "anchor-navigation-ex",
+        "expandable-chapters-small",
+        "sectionx",
+        "disqus"
+    ],
+    "pluginsConfig": {
+        "prism": {
+            "css": [
+                "prism-themes/themes/prism-base16-ateliersulphurpool.light.css"
+            ]
+        },
+        "tbfed-pagefooter": {
+            "copyright": "Copyright &copy r00tuser 2017",
+            "modify_label": "该文件修订时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "anchor-navigation-ex": {
+            "showLevel": true,
+            "associatedWithSummary": true,
+            "printLog": false,
+            "multipleH1": false,
+            "mode": "float",
+            "float": {
+                "showLevelIcon": false,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            },
+            "pageTop": {
+                "showLevelIcon": false,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            }
+        },
+        "sectionx": {
+            "tag": "b"
+        },
+        "disqus": {
+            "shortName": "yourshorName"
+        }
+    },
+    "title": "Heart Life",
+    "variables": {},
+    "theme-default": {
+        "showLevel": true
+    }
+}
