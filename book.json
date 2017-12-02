@@ -42,8 +42,7 @@
         "tbfed-pagefooter",
         "anchor-navigation-ex",
         "expandable-chapters-small",
-        "sectionx",
-        "disqus"
+        "sectionx"
     ],
     "pluginsConfig": {
         "prism": {
