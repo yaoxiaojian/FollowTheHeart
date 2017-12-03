@@ -109,7 +109,18 @@ gulp.task('default', ['build']);
 
 ```
 
+再看build.js
 
+```
+// build.js
+
+'use strict';
+
+gulp.task('build', ['html', 'images']);
+
+
+
+```
 
 
 
