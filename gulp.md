@@ -108,7 +108,7 @@ gulp.task('default', ['build']);
 
 ```
 
-再看build.js
+##### build.js
 
 ```
 // build.js
@@ -124,7 +124,7 @@ gulp.task('build', ['html', 'images']);
 
 ```
 
-inject.js
+##### inject.js
 
 ```
 'use strict';
@@ -165,6 +165,75 @@ gulp.task('inject', ['scripts', 'styles', 'templates'], function () {
 ```
 
 
+##### scripts.js
+```
+'use strict';
+gulp.task('scripts', function() {
+  return buildScripts();
+});
 
+function buildScripts() {
+  return gulp.src(path.join(conf.paths.src, '/scripts/main.js'))
+  .pipe($.debug("process: "))
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.size());
+};
+```
 
+##### styles.js
+```
+gulp.task('styles', function() {
+  return buildStyles();
+});
+
+var buildStyles = function() {
+  var sassOptions = {
+    includePaths: [
+      'bower_components',
+      path.join(conf.paths.src, '/styles')
+    ]
+  };
+
+  var injectFiles = gulp.src([
+    path.join(conf.paths.src, '/styles/index.scss')
+  ], { read: false });
+
+  var injectOptions = {
+    transform: function(filePath) {
+      filePath = filePath.replace(conf.paths.src + '/styles/', '');
+      return '@import "' + filePath + '";';
+    },
+    starttag: '// injector',
+    endtag: '// endinjector',
+    addRootSlash: false
+  };
+
+  return gulp.src([
+    path.join(conf.paths.src, '/styles/index.scss')
+  ])
+    .pipe($.inject(injectFiles, injectOptions))
+    .pipe(wiredep(_.extend({}, conf.wiredep)))
+    .pipe($.sourcemaps.init())
+    .pipe($.sass(sassOptions).on('error', $.sass.logError))
+    .pipe($.autoprefixer({
+            browsers: ['IOS 8']
+        })).on('error', conf.errorHandler('Autoprefixer'))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/styles/')));
+};
+```
+##### templates.js
+```
+gulp.task('templates', function() {
+  return buildTemplates();
+});
+
+var buildTemplates = function() {
+ return gulp.src([
+      path.join(conf.paths.src, '/pages/index.html')
+    ])
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/')));
+};
+```
 
