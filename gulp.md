@@ -10,7 +10,6 @@ $ npm install --global gulp
 ```
 
 ### 为什么用
-
 * 最直观的好处就是让我们的工作更有效率。
 * Gulp 侧重‘代码优先’的，做同一件事情，代码更为简洁。
 * Gulp 基于node streams（流）来构建任务，避免磁盘反复读取/写入。每个任务都是单独执行，这使得它速度更快、更为纯粹。
@@ -116,9 +115,11 @@ gulp.task('default', ['build']);
 
 'use strict';
 
+gulp.task('html', ['inject'], function () {
+  
+});
+
 gulp.task('build', ['html', 'images']);
-
-
 
 ```
 
