@@ -115,11 +115,52 @@ gulp.task('default', ['build']);
 
 'use strict';
 
+// 执行 `gulp.html` 时会先执行 `gulp.inject`
 gulp.task('html', ['inject'], function () {
   
 });
 
 gulp.task('build', ['html', 'images']);
+
+```
+
+inject.js
+
+```
+'use strict';
+
+// 执行 `gulp.html` 时会先执行 `gulp.scripts、gulp.styles、gulp.templates`
+gulp.task('inject', ['scripts', 'styles', 'templates'], function () {
+  var injectStyles = gulp.src([
+    path.join(conf.paths.tmp, '/serve/styles/*.css'),
+    path.join('!' + conf.paths.tmp, '/serve/styles/global.css')
+  ], { read: false });
+
+  var injectScripts = gulp.src([
+    path.join(conf.paths.src, '/scripts/*.js')
+  ], { read: false });
+
+  var injectOptions = {
+    ignorePath: [conf.paths.src, path.join(conf.paths.tmp, '/serve')],
+    addRootSlash: false,
+    relative: true
+  };
+
+  return gulp.src(path.join(conf.paths.tmp, '/serve/index.html'))
+    .pipe($.inject(injectStyles, injectOptions))
+    .pipe($.inject(injectScripts, _.extend(injectOptions, {
+      transform: function(filePath, file, i, length) {
+        if (path.extname(filePath) == '.js') {
+          filePath = filePath.replace("../../src/", "");
+          return '<script src="' + filePath + '"></script>';
+        } else {
+          return '<link rel="stylesheet" href="' + filePath + '">';
+        }
+      }
+    })))
+    .pipe(wiredep(_.extend({}, conf.wiredep)))
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
+});
 
 ```
 
