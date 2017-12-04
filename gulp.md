@@ -115,12 +115,14 @@ gulp.task('default', ['build']);
 
 'use strict';
 
-// 执行 `gulp.html` 时会先执行 `gulp.inject`
-gulp.task('html', ['inject'], function () {
-  
+// 执行 gulp.build 时会先执行 gulp.inject、gulp.images
+gulp.task('images', function() { 
+  return gulp.src('src/img/**/*')
+    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+    .pipe(gulp.dest('dist/images'))
+    .pipe(notify({ message: 'Images task complete' }));
 });
-
-gulp.task('build', ['html', 'images']);
+gulp.task('build', ['inject', 'images']);
 
 ```
 
@@ -129,24 +131,24 @@ gulp.task('build', ['html', 'images']);
 ```
 'use strict';
 
-// 执行 `gulp.html` 时会先执行 `gulp.scripts、gulp.styles、gulp.templates`
+// 执行 gulp.html 时会先执行 gulp.scripts、gulp.styles、gulp.templates
 gulp.task('inject', ['scripts', 'styles', 'templates'], function () {
   var injectStyles = gulp.src([
-    path.join(conf.paths.tmp, '/serve/styles/*.css'),
-    path.join('!' + conf.paths.tmp, '/serve/styles/global.css')
+    path.join('.tmp/serve/styles/*.css'),
+    path.join('!', '.tmp/serve/styles/global.css')
   ], { read: false });
 
   var injectScripts = gulp.src([
-    path.join(conf.paths.src, '/scripts/*.js')
+    path.join('src/scripts/*.js')
   ], { read: false });
 
   var injectOptions = {
-    ignorePath: [conf.paths.src, path.join(conf.paths.tmp, '/serve')],
+    ignorePath: ['src', path.join('.tmp/serve')],
     addRootSlash: false,
     relative: true
   };
 
-  return gulp.src(path.join(conf.paths.tmp, '/serve/index.html'))
+  return gulp.src(path.join('.tmp/serve/index.html'))
     .pipe($.inject(injectStyles, injectOptions))
     .pipe($.inject(injectScripts, _.extend(injectOptions, {
       transform: function(filePath, file, i, length) {
@@ -159,7 +161,7 @@ gulp.task('inject', ['scripts', 'styles', 'templates'], function () {
       }
     })))
     .pipe(wiredep(_.extend({}, conf.wiredep)))
-    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
+    .pipe(gulp.dest(path.join('.tmp/serve')));
 });
 
 ```
@@ -168,61 +170,36 @@ gulp.task('inject', ['scripts', 'styles', 'templates'], function () {
 ##### scripts.js
 ```
 'use strict';
-gulp.task('scripts', function() {
-  return buildScripts();
-});
 
-function buildScripts() {
-  return gulp.src(path.join(conf.paths.src, '/scripts/main.js'))
-  .pipe($.debug("process: "))
-    .pipe($.eslint())
-    .pipe($.eslint.format())
-    .pipe($.size());
-};
+gulp.task('scripts', function() { 
+  return gulp.src('src/js/*.js')
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('default'))
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe(notify({ message: 'Scripts task complete' }));
+});
 ```
 
 ##### styles.js
 ```
-gulp.task('styles', function() {
-  return buildStyles();
+'use strict';
+
+gulp.task('styles', function() { 
+  return gulp.src('src/styles/*.scss')
+    .pipe(sass({ style: 'expanded', }))
+    .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+    .pipe(gulp.dest('dist/styles'))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(minifycss())
+    .pipe(gulp.dest('dist/styles'))
+    .pipe(notify({ message: 'Styles task complete' }));
 });
-
-var buildStyles = function() {
-  var sassOptions = {
-    includePaths: [
-      'bower_components',
-      path.join(conf.paths.src, '/styles')
-    ]
-  };
-
-  var injectFiles = gulp.src([
-    path.join(conf.paths.src, '/styles/index.scss')
-  ], { read: false });
-
-  var injectOptions = {
-    transform: function(filePath) {
-      filePath = filePath.replace(conf.paths.src + '/styles/', '');
-      return '@import "' + filePath + '";';
-    },
-    starttag: '// injector',
-    endtag: '// endinjector',
-    addRootSlash: false
-  };
-
-  return gulp.src([
-    path.join(conf.paths.src, '/styles/index.scss')
-  ])
-    .pipe($.inject(injectFiles, injectOptions))
-    .pipe(wiredep(_.extend({}, conf.wiredep)))
-    .pipe($.sourcemaps.init())
-    .pipe($.sass(sassOptions).on('error', $.sass.logError))
-    .pipe($.autoprefixer({
-            browsers: ['IOS 8']
-        })).on('error', conf.errorHandler('Autoprefixer'))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/styles/')));
-};
 ```
+
 ##### templates.js
 ```
 gulp.task('templates', function() {
@@ -231,9 +208,56 @@ gulp.task('templates', function() {
 
 var buildTemplates = function() {
  return gulp.src([
-      path.join(conf.paths.src, '/pages/index.html')
+      path.join('src/pages/index.html')
     ])
-    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/')));
+    .pipe(gulp.dest(path.join('.tmp/serve/')));
 };
 ```
 
+##### watch.js
+```
+'use strict';
+
+gulp.task('watch', ['inject'], function () {
+  gulp.watch([path.join('src/pages/*.html'), 'bower.json'], ['inject-reload']);
+  gulp.watch([
+    path.join('src/styles/*.css'),
+    path.join('src/styles/*.scss')
+  ], function(event) {
+    if(isOnlyChange(event)) {
+      gulp.start('styles-reload');
+    } else {
+      gulp.start('inject-reload');
+    }
+  });
+
+  gulp.watch(path.join('src/scripts/*.js'), function(event) {
+    if(isOnlyChange(event)) {
+      gulp.start('scripts-reload');
+    } else {
+      gulp.start('inject-reload');
+    }
+  });
+
+  gulp.watch(path.join('src/pages/*.html'), function(event) {
+    gulp.start('inject-reload');
+  });
+});
+
+```
+
+### 常用插件
+* gulp-less：将less编译成css文件
+* gulp-load-plugins：在你的package.json文件中自动加载任意的gulp插件
+* gulp-ruby-sass：sass的编译
+* gulp-autoprefixer：自动添加css前缀
+* gulp-minify-css：压缩css
+* gulp-jshint：js代码校验
+* gulp-concat：合并js文件
+* gulp-uglify：压缩js代码
+* gulp-imagemin：压缩图片
+* gulp-livereload：自动刷新页面 
+* gulp-cache：图片缓存，只有图片替换了才压缩
+* gulp-notify：更改提醒
+
+更详细的Gulp说明：[https://github.com/Platform-CUF/use-gulp](https://github.com/Platform-CUF/use-gulp)
