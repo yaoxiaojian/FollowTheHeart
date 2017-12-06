@@ -9,14 +9,14 @@ PreloadJS - 帮助管理和协调加载中的一些资源
 
 项目地址：http://yaoxiaojian.duapp.com/newyear/
 
-##### Html:
-```
-<canvas id="canvasElementId" width="640" height="1136" ></canvas>
-```
+#### sprite精灵图的使用
+> 精灵图是把一个连续的动画，分成一帧一帧的图片，集合到一个图片里，通过CreateJs进行加载，组成一个动画。
 
-##### loading:
-```
+#### 制作工具
+* animate CC
+* zoe
+* TexturePackerGUI(收费)
 
-```
+#### Json文件转换
 
 
