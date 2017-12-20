@@ -23,10 +23,10 @@ Number('123abc') // NaN
 
  //布尔值：true转成1，false转成0。
  Number(true) // 1 
- 
+
  //undefined：转成NaN。
  Number(undefined) // NaN 
- 
+
  //null：转成0。
  Number(null) // 0
 ```
@@ -38,8 +38,6 @@ Number('123abc') // NaN
 如果 valueOf 方法返回复合类型的值，再调用对象自身的 toString 方法，如果 toString 方法返回原始类型的值，则对该值使用 Number 发放，不再进行后续步骤。
 
 如果 toString 发放返回的是复合类型的值，则报错。
-
-
 
 ##### String函数
 
@@ -54,10 +52,10 @@ String('123abc') // "123abc"
 
  //布尔值：true转成"true"，false转成"false"。
  String(true) // "true" 
- 
+
  //undefined：转成"undefined"。
  String(undefined) // "undefined"
- 
+
  //null：转成"null"。
  String(null) // "null"
 ```
@@ -69,8 +67,6 @@ String('123abc') // "123abc"
 如果 toString 方法返回的是复合类型的值，再调用 valueOf 方法，如果 valueOf 方法返回的是原始类型的值，则对该值使用 String 方法，不再进行以下步骤。
 
 如果 valueOf 方法返回的是复合类型的值，则报错。
-
-
 
 ##### Boolean函数
 
@@ -84,41 +80,9 @@ Boolean(undefined || null || -0 || 0 || NaN || '') // false，除此之外都为
 * 判断语句
 * Native调用 如:alert
 
+![](/assets/typeof.jpg)
+
 ---
 
 详细资料：[http://blog.csdn.net/yangjvn/article/details/48284163](http://blog.csdn.net/yangjvn/article/details/48284163)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
