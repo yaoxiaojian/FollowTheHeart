@@ -80,7 +80,27 @@ Boolean(undefined || null || -0 || 0 || NaN || '') // false，除此之外都为
 * 判断语句
 * Native调用 如:alert
 
+#### typeof：
+
+typeof 运算符把类型信息当作字符串返回
+
+```js
+typeof (123) // "number"
+```
+
 ![](/assets/typeof.jpg)
+
+
+
+#### instanceof：
+
+用于判断一个变量是否某个对象的实例
+
+```js
+var a=new Array();
+console.log(a instanceof Array); // true
+console.log(a instanceof Object); // true，Array是object的子类
+```
 
 ---
 
