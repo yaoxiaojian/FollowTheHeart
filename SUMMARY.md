@@ -8,4 +8,5 @@
   * [DOM事件](dom.md)
   * [类型转换](typeof.md)
   * [HTTP协议](http.md)
+  * [原型链](yuan-xing-lian.md)
 
