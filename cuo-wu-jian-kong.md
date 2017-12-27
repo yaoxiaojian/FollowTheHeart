@@ -30,5 +30,9 @@
 * 采用Ajax通信上报
 * 利用Image对象上报
 
+```js
+（new Image()).src='htpp://xxxxx.com';
+```
+
 
 
