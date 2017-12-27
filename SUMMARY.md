@@ -12,4 +12,8 @@
   * [通信](tong-xin.md)
   * [安全](an-quan.md)
   * [算法](suan-fa.md)
+  * [渲染机制](xuan-ran-ji-zhi.md)
+  * [JS运行机制](jsyun-xing-ji-zhi.md)
+  * [页面性能](ye-mian-xing-neng.md)
+  * [错误监控](cuo-wu-jian-kong.md)
 
