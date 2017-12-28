@@ -16,4 +16,5 @@
   * [JS运行机制](jsyun-xing-ji-zhi.md)
   * [页面性能](ye-mian-xing-neng.md)
   * [错误监控](cuo-wu-jian-kong.md)
+  * [MVVM框架](mvvmkuang-jia.md)
 
