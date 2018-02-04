@@ -17,6 +17,7 @@
   * [页面性能](ye-mian-xing-neng.md)
   * [错误监控](cuo-wu-jian-kong.md)
   * [MVVM框架](mvvmkuang-jia.md)
+  * [面试相关](mian-shi-xiang-guan.md)
 * [学点儿什么](xue-dian-er-shi-yao.md)
   * [ES6](xue-dian-er-shi-yao/es6.md)
 
