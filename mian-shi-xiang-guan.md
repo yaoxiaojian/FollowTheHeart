@@ -26,7 +26,7 @@ a(); // 1000
 
 **只有函数对象才有 prototype属性，prototype属性也叫原型对象,主要是为了实现继承和共享属性;**
 
-__proto__ 、prototype傻傻分不清楚？ 记住以下两点:
+**\_\_proto\_\_ 、prototype傻傻分不清楚？ 记住以下两点:**
 1. __proto__是每个对象都有的一个属性，而prototype是函数才会有的属性。
 2. __proto__指向的是当前对象的原型对象，而prototype指向的，是以当前函数作为构造函数构造出来的对象的原型对象。
 prototype与__proto__的关系就是：你的__proto__来自你构造函数的prototype
