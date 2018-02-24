@@ -20,12 +20,16 @@ var a = f1();
 a(); // 1000
 ```
 
-
-> #### [原型链](https://zhuanlan.zhihu.com/p/23026595)
+> #### [原型链](https://zhuanlan.zhihu.com/p/22189387)
 
 每个对象都有一个指向它的原型（prototype）对象的内部链接。这个原型对象又有自己的原型，直到某个对象的原型为 null 为止（也就是不再有原型指向），组成这条链的最后一环。这种一级一级的链结构就称为**原型链（prototype chain）**。
 
 **只有函数对象才有 prototype属性，prototype属性也叫原型对象,主要是为了实现继承和共享属性;**
+
+__proto__ 、prototype傻傻分不清楚？ 记住以下两点:
+1. __proto__是每个对象都有的一个属性，而prototype是函数才会有的属性。
+2. __proto__指向的是当前对象的原型对象，而prototype指向的，是以当前函数作为构造函数构造出来的对象的原型对象。
+prototype与__proto__的关系就是：你的__proto__来自你构造函数的prototype
 
 **由function创造出来的函数对象：**
 
@@ -47,13 +51,13 @@ var b='qwe'; // b 是字符串类型,属于普通对象
 var c=123;; // c 是数字类型,属于普通对象
 ```
 
-**\*每个函数都有一个原型属性prototype指向自身的原型**
+* 每个函数都有一个原型属性prototype指向自身的原型
 
-**\*由这个函数创建的对象也有一个\_\_proto\_\_属性指向这个原型**
+* 由这个函数创建的对象也有一个\_\_proto\_\_属性指向这个原型
 
-**\*函数的原型是一个对象，所以这个对象也会有一个\_\_proto\_\_指向自己的原型，这样逐层深入直到Object对象的原型，这样就形成了原型链。**
+* 函数的原型是一个对象，所以这个对象也会有一个\_\_proto\_\_指向自己的原型，这样逐层深入直到Object对象的原型，这样就形成了原型链。
 
-**\*JS在创建对象（不论是普通对象还是函数对象）的时候，都有一个叫做\_\_proto\_\_的内置属性，用于指向创建它的函数对象的原型对象prototype。**
+* JS在创建对象（不论是普通对象还是函数对象）的时候，都有一个叫做\_\_proto\_\_的内置属性，用于指向创建它的函数对象的原型对象prototype。
 
 * **普通对象的\_\_proto\_\_**
 
@@ -159,11 +163,22 @@ console.log(a); // 2
 
 ```js
 function f(a){
-    console.log(a);// undefined
+    console.log(a);// function
     var a = 2;
     console.log(a);//2
     function a(){};
-    console.log(a);//function
+    console.log(a);//2
+}
+
+f(1);
+
+//实际代码执行顺序是这样的：
+function f(a){
+    var a = function(){};
+    console.log(a);// function
+    var a = 2;
+    console.log(a);//2
+    console.log(a);//2
 }
 
 f(1);
